@@ -1,0 +1,31 @@
+{
+  "name": "integrated-project-system",
+  "version": "1.0.0",
+  "description": "Research project management system for school",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jinx73/Integrated-Project-System.git"
+  },
+  "author": "Tay Jing Xuan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jinx73/Integrated-Project-System/issues"
+  },
+  "homepage": "https://github.com/jinx73/Integrated-Project-System#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "formidable": "^1.1.1",
+    "moment": "^2.20.1",
+    "mysql": "^2.15.0",
+    "nodemon": "^1.14.11",
+    "openid-client": "^1.19.3",
+    "passport": "^0.4.0"
+  }
+}
