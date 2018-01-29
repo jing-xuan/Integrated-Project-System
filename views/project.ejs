@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= project[0]['p_code'] %></title>
+    <style>
+      #projDetails{
+        padding-left: 30px;
+      }
+      #projDetails h1{
+        font-family: 'Open Sans';
+        font-weight: normal;
+      }
+      #pDetails{
+        font-family: 'Open Sans';
+        padding-left: 50px;
+        font-size: 20px;
+        border-collapse: separate;
+      }
+      #pDetails td{
+        padding-right: 15px;
+        vertical-align: top;
+        padding-bottom: 25px;
+        text-align: right;
+      }
+      #pDetails td:nth-child(2n){
+        color: #008080;
+        text-align: left;
+      }
+      input[type= 'file']{
+        margin-left: 70px;
+      }
+      input{
+        font-family: 'Open Sans';
+        color: #008080;
+      }
+    </style>
+  </head>
+  <body>
+  <% include ../partials/header.ejs %>
+  <div id = "projDetails">
+    <h1><%= project[0]['p_title']%></h1>
+    <table id = "pDetails">
+      <tr>
+        <td>Project Code:</td>
+        <td><%= project[0]['p_code'] %></td>
+      </tr>
+      <tr id = "members">
+        <td>Members:</td>
+      </tr>
+      <tr id = "inM">
+        <td>Teacher:</td>
+      </tr>
+      <tr>
+        <td>Org: </td>
+        <td><%= project[0]['p_org']%></td>
+      </tr>
+      <tr id = "eM">
+        <td>Ext. Mentor: </td>
+      </tr>
+    </table>
+    <form id = "upload" action="/upload" enctype="multipart/form-data" method="post" hidden>
+      <input type="file" name="upload" multiple>
+      <input type="submit" value="Upload">
+      <input type = "hidden" name = "p_code" value = <%= project[0]['p_code'] %>>
+    </form>
+  </div>
+  <script>
+    var row = "<td><%= project[0]['S1_Name']%>";
+    <%if(project[0]['S2_Name'] != null){%>
+      row += "<br><%= project[0]['S2_Name']%>";
+    <%}%>
+    <%if(project[0]['S3_Name'] != null){%>
+      row += "<br><%= project[0]['S3_Name']%>";
+    <%}%>
+    <%if(project[0]['S4_Name'] != null){%>
+      row += "<br><%= project[0]['S4_Name']%>";
+    <%}%>
+    row += "</td>"
+    $("#members").append(row);
+    var t = "<td><%= project[0]['T1']%>";
+    <%if(project[0]['T2'] != null){%>
+      t += "<br><%= project[0]['T2']%>";
+    <%}%>
+    $("#inM").append(t);
+    var exM = ""
+    <%if(project[0]['M1'] == null){%>
+      exM = "<td>-</td>";
+    <%}else{%>
+      exM = "<td><%= project[0]['M1'] %>";
+      <%if(project[0]['M2'] != null){%>
+        exM += "<br><%= project[0]['M2'] %>";
+      <%}%>
+      <%if(project[0]['M3'] != null){%>
+        exM += "<br><%= project[0]['M3'] %>";
+      <%}%>
+      exM += "</td>";
+    <%}%>
+    $("#eM").append(exM);
+    <%if(user == project[0]['S1_Name'] || user == project[0]['S2_Name'] || user == project[0]['S3_Name'] || user == project[0]['S4_Name']){%>
+      $("#upload").show();
+    <%}%>
+  </script>
+  </body>
+</html>
