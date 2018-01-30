@@ -20,7 +20,6 @@
   }
   .link{
     position: absolute;
-    bottom: 20px;;
     right: 15px;
   }
   body{
@@ -29,10 +28,28 @@
   hr{
     border-color: rgb(0, 168, 169);
   }
+  footer{
+    position: absolute;
+    bottom: 0px;
+    border-top: solid #008080;
+    border-top-width: thin;
+    width: 100%;
+  }
+  footer p{
+    font-family: 'Open Sans';
+    padding-left: 20px;
+  }
+  footer a{
+    text-decoration: none;
+    color: black;
+  }
+  footer a:hover{
+    color: #008080;
+  }
 </style>
 <div class = "top">
   <div class = "nav">
-    <a href = "/home" style = "font-size: 30px;"> Project Management System</a>
+    <a href = "/home" > Project Management System</a>
     <span class = "link">
       <a href = "/home" >Your Projects</a>&nbsp;|&nbsp;
       <a href = "#" >All Projects</a>&nbsp;|&nbsp;
@@ -41,3 +58,7 @@
   </div>
  </div>
  <hr>
+
+ <footer>
+   <p>Any errors? Missing Projects? Email <a href = "mailto:rie@highsch.nus.edu.sg">rie@highsch.nus.edu.sg</a></p>
+ </footer>

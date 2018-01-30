@@ -129,8 +129,9 @@ app.get('/home', ensureAuthenticated, function(req, res){
 	});
 })
 
-app.get('/project/:projectCode', ensureAuthenticated, function(req, res){
-	var sql = "SELECT * FROM projects WHERE p_code = '" + req.params.projectCode + "'";
+app.get('/project/:projectCode', ensureAuthenticated, function(req, res){/* WHERE p_code = '" + req.params.projectCode + "'*/
+	var sql = "SELECT projects.*, grading.p_code, grading.status, grading.report, grading.poster FROM projects INNER JOIN grading ON projects.p_code=grading.p_code WHERE projects.p_code = '" + req.params.projectCode + "'";
+	console.log(sql);
 	con.query(sql, function(err, results){
 		if(err) throw err;
 		console.log(results);

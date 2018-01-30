@@ -10,16 +10,17 @@
         font-family: 'Open Sans';
         font-weight: normal;
       }
-      #pDetails{
+      #pDetails, #formTable{
         font-family: 'Open Sans';
         padding-left: 50px;
         font-size: 20px;
+        margin-top: 20px;
         border-collapse: separate;
       }
-      #pDetails td{
-        padding-right: 15px;
+      #pDetails td, #formTable td{
+        padding-right: 20px;
         vertical-align: top;
-        padding-bottom: 25px;
+        padding-top: 15px;
         text-align: right;
       }
       #pDetails td:nth-child(2n){
@@ -27,11 +28,42 @@
         text-align: left;
       }
       input[type= 'file']{
+        display: none;
+        width: 100%;
+      }
+      #fuoL, input[type = "submit"]{
+        font-size: 15px;
+        cursor: pointer;
+        border: solid 1px #008080;
+        padding: 2px 5px;;
+        border-radius: 3px;
+        color: #008080;
+        background-color: white;
+      }
+      #fuoL:hover{
+        color: white;
+        background-color: #008080;
+      }
+      input[type = 'radio']{
+        display: inline;
         margin-left: 70px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+      .rBtn{
+        font-family: 'Open Sans';
+        padding: 5px;
       }
       input{
         font-family: 'Open Sans';
         color: #008080;
+      }
+      th{
+        text-align: left;
+      }
+      #formTable select{
+        font-family: 'Open Sans';
+        font-size: 15px;
       }
     </style>
   </head>
@@ -41,31 +73,61 @@
     <h1><%= project[0]['p_title']%></h1>
     <table id = "pDetails">
       <tr>
+        <th colspan = "2">Project Details</th>
+      </tr>
         <td>Project Code:</td>
-        <td><%= project[0]['p_code'] %></td>
-      </tr>
-      <tr id = "members">
-        <td>Members:</td>
-      </tr>
-      <tr id = "inM">
-        <td>Teacher:</td>
+        <td><%= project[0]['p_code']%></td>
+        <td rowspan = "3">Members:</td>
+        <td rowspan = "3" id = "members"></td>
       </tr>
       <tr>
-        <td>Org: </td>
+        <td>SSEF Code:</td>
+        <td id = "ssc"><%= project[0]['p_ssefcode']%></td>
+      </tr>
+      <tr>
+        <td>Org:</td>
         <td><%= project[0]['p_org']%></td>
       </tr>
-      <tr id = "eM">
-        <td>Ext. Mentor: </td>
+      <tr>
+        <td>Teacher:</td>
+        <td id = "inM"></td>
+        <td>Report:</td>
+        <td id = "Rp"></td>
+      </tr>
+      <tr>
+        <td>Ext. Mentor:</td>
+        <td id = "eM"></td>
+        <td>Poster:</td>
+        <td id = "Pstr"></td>
+      </tr>
+      <tr>
+        <td>Status:</td>
+        <td><%= project[0]['p_status']%></td>
       </tr>
     </table>
-    <form id = "upload" action="/upload" enctype="multipart/form-data" method="post" hidden>
-      <input type="file" name="upload" multiple>
-      <input type="submit" value="Upload">
-      <input type = "hidden" name = "p_code" value = <%= project[0]['p_code'] %>>
-    </form>
-  </div>
+    <table id = "formTable">
+      <tr>
+        <th>Submission</th>
+      </tr>
+      <tr>
+        <td>
+          <form action = "/upload" method = "post" id = "submit">
+            <select name = "pStatus">
+              <option value = "Ready">Ready to grade @ RC</option>
+              <option value = "Extension">Need an Extension/Grading next year</option>
+            </select>
+        </td>
+        <td>
+          <label for="fuo" id="fuoL">Custom Upload</label>
+          <input id="fuo" type="file"/>
+          <input type = "submit" value = "upload">
+        </td>
+    </table>
   <script>
-    var row = "<td><%= project[0]['S1_Name']%>";
+    <%if(project[0]['p_ssefcode'] == null){%>
+      $("#ssc").html("-");
+    <%}%>
+    var row = "<%= project[0]['S1_Name']%>";
     <%if(project[0]['S2_Name'] != null){%>
       row += "<br><%= project[0]['S2_Name']%>";
     <%}%>
@@ -75,29 +137,33 @@
     <%if(project[0]['S4_Name'] != null){%>
       row += "<br><%= project[0]['S4_Name']%>";
     <%}%>
-    row += "</td>"
     $("#members").append(row);
-    var t = "<td><%= project[0]['T1']%>";
+    var t = "<%= project[0]['T1']%>";
     <%if(project[0]['T2'] != null){%>
       t += "<br><%= project[0]['T2']%>";
     <%}%>
     $("#inM").append(t);
     var exM = ""
     <%if(project[0]['M1'] == null){%>
-      exM = "<td>-</td>";
+      exM = "-";
     <%}else{%>
-      exM = "<td><%= project[0]['M1'] %>";
+      exM = "<%= project[0]['M1'] %>";
       <%if(project[0]['M2'] != null){%>
         exM += "<br><%= project[0]['M2'] %>";
       <%}%>
       <%if(project[0]['M3'] != null){%>
         exM += "<br><%= project[0]['M3'] %>";
       <%}%>
-      exM += "</td>";
     <%}%>
     $("#eM").append(exM);
     <%if(user == project[0]['S1_Name'] || user == project[0]['S2_Name'] || user == project[0]['S3_Name'] || user == project[0]['S4_Name']){%>
       $("#upload").show();
+    <%}%>
+    <%if(project[0]['report'] == null){%>
+      $("#Rp").html("Not submitted");
+    <%}%>
+    <%if(project[0]['poster'] == null){%>
+      $("#Pstr").html("Not submitted");
     <%}%>
   </script>
   </body>
