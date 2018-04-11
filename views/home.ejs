@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home</title>
+    <style>
+      .projectList{
+        width: 80%;
+        padding-left: 10%;
+      }
+      .projectList h1{
+        font-family: 'Open Sans';
+        font-weight: normal;
+      }
+      .project{
+        font-family: 'Open Sans';
+        font-weight: normal;
+        text-align: left;
+        border-collapse: collapse;
+        margin: auto;
+      }
+      .project td{
+        padding: 10px;
+        vertical-align: top;
+        border-top: solid;
+        border-top-width: thin;
+      }
+      .project th{
+        padding-bottom: 10px;
+        color: #008080;
+      }
+      .project tr:hover{
+        color: #008080;
+      }
+    </style>
+  </head>
+  <body>
+    <% include ../partials/header.ejs %>
+    <div class = "projectList">
+      <h1>Your Projects</h1>
+      <table class = "project">
+        <tr>
+          <th>Code</th>
+          <th>Title</th>
+          <th>Members</th>
+        </tr>
+      </table>
+  </div>
+  </body>
+  <script>
+    <%for(var i = 0; i< projects.length; i++){%>
+      var row = "";
+      row += "<tr class = 'proj' data-href = '/project/<%= projects[i]['p_code'] %>'><td><%= projects[i]['p_code']%></td>";
+      row += "<td><%= projects[i]['p_title'] %></td>"
+      row += "<td><%= projects[i]['S1_Name']%>";
+      <%if(projects[i]['S2_Name'] != null){%>
+        row += "<br><%= projects[i]['S2_Name']%>";
+      <%}%>
+      <%if(projects[i]['S3_Name'] != null){%>
+        row += "<br><%= projects[i]['S3_Name']%>";
+      <%}%>
+      <%if(projects[i]['S4_Name'] != null){%>
+        row += "<br><%= projects[i]['S4_Name']%>";
+      <%}%>
+      row += "</td>"
+      $(".project").append(row);
+    <%}%>
+    $(".proj").click(function(){
+      window.location.replace($(this).data("href"));
+    });
+  </script>
+</html>

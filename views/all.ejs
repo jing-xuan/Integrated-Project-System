@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>All Projects</title>
+  </head>
+  <style>
+    #filter{
+      width: 300px;
+      font-family: sans-serif;
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+    label{
+      font-family: sans-serif;
+      font-size: 20px;
+    }
+    #searchBar{
+      padding-left: 30px;
+      padding-top: 20px;
+    }
+    #proj{
+      font-family: 'Open Sans';
+      text-align: left;
+      vertical-align: text-top;
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    #proj td{
+      vertical-align: top;
+      border-top: solid #008080;
+      border-top-width: thin;
+      padding: 5px;
+    }
+    #proj th{
+      padding-bottom: 10px;
+    }
+    .projRow:hover{
+      color: #008080;
+    }
+    td:nth-child(2){
+      max-width: 500px;
+    }
+    #proj a{
+      color: black;
+    }
+    #proj a:hover{
+      color: #008080;
+    }
+  </style>
+  <body>
+    <% include ../partials/header.ejs %>
+    <div id = "projList">
+      <div id = "searchBar">
+        <label for = "filter">Search: </label>
+        <input type = "text" id = "filter" onkeyup = "search()" placeholder = "Search by title/code/name">
+      </div>
+      <table id = "proj">
+        <tr>
+          <th>Code</th>
+          <th>Title</th>
+          <th>Teacher</th>
+          <th>Grading</th>
+          <th>Report</th>
+          <th>Poster</th>
+        </tr>
+      </table>
+    </div>
+  </body>
+  <script>
+    <%for(var i = 0; i<projects.length; i++){%>
+      var t = "<tr class = 'projRow' data-href = '/project/<%= projects[i]['p_code'] %>'><td><%= projects[i]['p_code']%></td>";
+      var title = "<%- projects[i]['p_title'] %>";
+      t += "<td>" + title + "</td>";
+      t += "<td><%= projects[i]['T1'] %><br><%= projects[i]['T2']%></td>"
+      <%if(projects[i]['status'] == null){%>
+        t += "<td>Pending</td>";
+      <%}else if(projects[i]['status'] == 'Ready to Grade at RC'){%>
+        t += "<td>Ready</td>";
+      <%}else if(projects[i]['status'] == 'Extension Required'){%>
+        t += "<td>Extended</td>";
+      <%}%>
+      <%if(projects[i]['report'] == null){%>
+        t += "<td style = 'text-align: center;'>-</td>";
+      <%}else{%>
+        t += "<td style = 'text-align: center;'><a href = '/download/Report/<%= projects[i]['report'] %>'><i class='far fa-file-pdf'></i></a></td>";
+      <%}%>
+      <%if(projects[i]['poster'] == null){%>
+        t += "<td style = 'text-align: center;'>-</td>";
+        <%}else{%>
+          t += "<td style = 'text-align: center;'><a href = '/download/Poster/<%= projects[i]['poster'] %>'><i class='far fa-file-pdf'></i></a></td>";
+        <%}%>
+      t += "</tr>"
+      $("#proj").append(t);
+      $(".projRow").click(function(){
+        window.location.replace($(this).data("href"));
+      });
+      function search(){
+        $('.projRow').each(function(i, obj){
+          var match = false;
+          $(this).find('td').each(function(j, td){
+            if($(this).text().toUpperCase().indexOf($('#filter').val().toUpperCase()) > -1){
+              match = true;
+            }
+          });
+          if(match){
+            $(this).show();
+          }else{
+            $(this).hide();
+          }
+        });
+      }
+    <%}%>
+  </script>
+</html>

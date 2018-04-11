@@ -1,71 +1,79 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Home</title>
+    <title>Research Portal</title>
     <style>
-      .projectList{
-        width: 80%;
-        padding-left: 10%;
-      }
-      .projectList h1{
+      h1{
         font-family: 'Open Sans';
-        font-weight: normal;
       }
-      .project{
-        font-family: 'Open Sans';
-        font-weight: normal;
-        text-align: left;
-        border-collapse: collapse;
+      #content{
+        width: 90%;
         margin: auto;
       }
-      .project td{
-        padding: 10px;
+      p{
+        font-family: 'Open Sans';
+        font-size: 20px;
+        padding-left: 20px;
+      }
+      table{
+        font-family: 'Open Sans';
+        font-size: 20px;
+        text-align: left;
+      }
+      th{
+        color: #008080;
+      }
+      td{
+        padding-left: 20px;
+        width: 50%;
         vertical-align: top;
-        border-top: solid;
-        border-top-width: thin;
-      }
-      .project th{
-        padding-bottom: 10px;
-        color: #008080;
-      }
-      .project tr:hover{
-        color: #008080;
       }
     </style>
   </head>
   <body>
     <% include ../partials/header.ejs %>
-    <div class = "projectList">
-      <h1>Your Projects</h1>
-      <table class = "project">
+    <div id = "content">
+      <h1>Report and Poster Submission now Open</h1>
+      <table>
         <tr>
-          <th>Code</th>
-          <th>Title</th>
-          <th>Members</th>
+          <th>How to use portal?</th>
+        </tr>
+        <tr>
+          <td colspan= "2">
+            <ul>
+              <li>Go to 'Your Projects'</li>
+              <li>Click on the project you want to submit</li>
+              <li>The options to submit will be at the bottom</li>
+              <li>If there are errors/missing projects, email rie@highsch.nus.edu.sg</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <th>Report Submission</th>
+          <th>Poster Submission</th>
+        </tr>
+        <tr>
+          <td>
+            <ul>
+              <li>Combine your project documents (cover page, abstract, report) into one <b>pdf</b> document</li>
+              <li>Click on 'Select Project Docs', select your pdf document and press upload</li>
+              <li><b>If you are not ready for grading:</b></li>
+              <ul>
+                <li>Click on the dropdown and change it to 'Need extension...'</li>
+                <li>Upload a <b>pdf</b> of your extension form</li>
+              </ul>
+              <li>Submit by 7 Feb 2018</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Convert your poster to <b>pdf</b></li>
+              <li>Click on 'Select Poster', select your pdf poster and press upload</li>
+              <li>Posters submitted by 9 Feb will be printed for free in house</li>
+            </ul>
+          </td>
         </tr>
       </table>
-  </div>
+    </div>
   </body>
-  <script>
-    <%for(var i = 0; i< projects.length; i++){%>
-      var row = "";
-      row += "<tr class = 'proj' data-href = '/project/<%= projects[i]['p_code'] %>'><td><%= projects[i]['p_code']%></td>";
-      row += "<td><%= projects[i]['p_title'] %></td>"
-      row += "<td><%= projects[i]['S1_Name']%>";
-      <%if(projects[i]['S2_Name'] != null){%>
-        row += "<br><%= projects[i]['S2_Name']%>";
-      <%}%>
-      <%if(projects[i]['S3_Name'] != null){%>
-        row += "<br><%= projects[i]['S3_Name']%>";
-      <%}%>
-      <%if(projects[i]['S4_Name'] != null){%>
-        row += "<br><%= projects[i]['S4_Name']%>";
-      <%}%>
-      row += "</td>"
-      $(".project").append(row);
-    <%}%>
-    $(".proj").click(function(){
-      window.location.replace($(this).data("href"));
-    });
-  </script>
 </html>

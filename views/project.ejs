@@ -16,6 +16,7 @@
         font-size: 20px;
         margin-top: 20px;
         border-collapse: separate;
+        margin-bottom: 20px;
       }
       #pDetails td, #formTable td{
         padding-right: 20px;
@@ -31,7 +32,7 @@
         display: none;
         width: 100%;
       }
-      #fuoL, input[type = "submit"]{
+      #fuoL, #fuoPL, input[type = "submit"]{
         font-size: 15px;
         cursor: pointer;
         border: solid 1px #008080;
@@ -40,7 +41,7 @@
         color: #008080;
         background-color: white;
       }
-      #fuoL:hover{
+      #fuoL:hover, #fuoPL:hover, input[type = 'submit']:hover{
         color: white;
         background-color: #008080;
       }
@@ -64,6 +65,16 @@
       #formTable select{
         font-family: 'Open Sans';
         font-size: 15px;
+      }
+      .fname{
+        font-size: 15px;
+      }
+      .dlLink{
+        text-decoration: none;
+        color: #008080;
+      }
+      .dlLink:hover{
+        color: black;
       }
     </style>
   </head>
@@ -103,25 +114,38 @@
       <tr>
         <td>Status:</td>
         <td><%= project[0]['p_status']%></td>
+        <td>Grading:</td>
+        <td id = "gStat"></td>
       </tr>
     </table>
-    <table id = "formTable">
+    <table id = "formTable" style = "display: none;">
       <tr>
         <th>Submission</th>
       </tr>
       <tr>
         <td>
-          <form action = "/upload" method = "post" id = "submit">
-            <select name = "pStatus">
-              <option value = "Ready">Ready to grade @ RC</option>
-              <option value = "Extension">Need an Extension/Grading next year</option>
+          <form action="/uploadDocs" enctype="multipart/form-data" method="post">
+            <input type = "hidden" name = "code" value = "<%= project[0]['p_code'] %>">
+            <select name = "pStatus" id = "pStatus">
+              <option value = "Ready to Grade at RC">Ready to grade @ RC</option>
+              <option value = "Extension Required">Need an Extension/Grading next year</option>
             </select>
         </td>
         <td>
-          <label for="fuo" id="fuoL">Custom Upload</label>
-          <input id="fuo" type="file"/>
-          <input type = "submit" value = "upload">
+          <label for="fuo" id="fuoL">Select Project Docs</label>
+          <input type="file" name="upload" multiple id = "fuo"><span class = "fname">None Selected</span>
+          <input type = "submit" value = "Upload">
+        </form>
         </td>
+        <td>
+          <form action="/uploadPoster" enctype="multipart/form-data" method="post">
+            <input type = "hidden" name = "code" value = "<%= project[0]['p_code'] %>">
+            <label for="fuoP" id="fuoPL">Select Poster</label>
+            <input type="file" name="upload" multiple id = "fuoP"><span class = "fname">None Selected</span>
+            <input type = "submit" value = "Upload">
+          </form>
+        </td>
+      </tr>
     </table>
   <script>
     <%if(project[0]['p_ssefcode'] == null){%>
@@ -156,15 +180,43 @@
       <%}%>
     <%}%>
     $("#eM").append(exM);
-    <%if(user == project[0]['S1_Name'] || user == project[0]['S2_Name'] || user == project[0]['S3_Name'] || user == project[0]['S4_Name']){%>
-      $("#upload").show();
+    <%if((user == project[0]['S1_Name'] || user == project[0]['S2_Name'] || user == project[0]['S3_Name'] || user == project[0]['S4_Name'])){%>
+      $("#formTable").show();
     <%}%>
     <%if(project[0]['report'] == null){%>
       $("#Rp").html("Not submitted");
+    <%}else if(project[0]['status'] == 'Extension Required'){%>
+      $("#Rp").html("<a class = 'dlLink' href = '/download/ExtForm/<%= project[0]['report'] %>'> Extension Applied <i class='fa fa-download' aria-hidden='true'></i></a>");
+    <%}else{%>
+      $("#Rp").html("<a class = 'dlLink' href = '/download/Report/<%= project[0]['report'] %>'> <%= project[0]['report'] %> <i class='fa fa-download' aria-hidden='true'></i></a>");
     <%}%>
     <%if(project[0]['poster'] == null){%>
       $("#Pstr").html("Not submitted");
+      <%}else{%>
+        $("#Pstr").html("<a class = 'dlLink' href = '/download/Poster/<%= project[0]['poster'] %>'><%= project[0]['poster'] %><i class='fa fa-download' aria-hidden='true'></i></a>");
+      <%}%>
+    <%if(project[0]['status'] == null){%>
+      $("#gStat").html("Pending");
+    <%}else{%>
+      $("#gStat").html("<%= project[0]['status'] %>");
+
     <%}%>
+    $("#pStatus").change(function(){
+      if($('#pStatus').val() == 'Extension Required'){
+        $('#fuoL').html("Select Extension Form");
+      }else{
+        $('#fuoL').html("Select Project Docs");
+      }
+    });
+    $("#fuo").change(function (e) {
+      var $this = $(this);
+      $this.next().html($this.val().split('\\').pop());
+    });
+    $("#fuoP").change(function (e) {
+      var $this = $(this);
+      $this.next().html($this.val().split('\\').pop());
+    });
   </script>
+</div>
   </body>
 </html>
